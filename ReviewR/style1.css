@@ -1,0 +1,27 @@
+.boxed {
+	float: right;
+	  border: 1px solid green ;
+	  background: solid green;
+	  width: 300px;
+	  height:560px;
+	  padding:50px;
+}
+.title{
+	font-size:50px;
+}
+.title2{
+	font-size:25px;
+}
+.login{
+	position:absolute;
+	right:20%;
+}
+.doge{
+	position:absolute;
+	left:15%;
+	top:20%;
+}
+body {
+    height: 100%;
+    background: linear-gradient(90deg, #00a1f1 60%, white 40%);
+}
