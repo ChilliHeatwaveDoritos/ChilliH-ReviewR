@@ -1,5 +1,6 @@
 <?php
 	require_once __DIR__.'/dbcontroller.class.php';
+	require_once(__DIR__.'/auth.php');
 ?>
 
 
@@ -53,19 +54,44 @@ if (!isset($_POST) || count($_POST) == 0){?>
 		</div>
 	</section>
 	<div class="container">
-	<header>
-	<h1>Ban his ass</h1>
-	</header>
+	<header class = "major special">
+			<h1><br>Ban</h1>
+		</header>
 	<form name="Ban action="" method="post">
 		<div class = "6u 12u$">
-					<input type = "text" name = "name" placeholder="name" required/>
+					Name<input type = "text" name = "name" placeholder=" Name" required/>
 				</div>
 		<div class = "12u$">
-					<textarea rows = "6" name = "reason"></textarea>
+					Reason
+					<textarea rows = "6" name = "reason" placeholder = "Reason"></textarea>
 		</div>
+			<div class = "12u$">
+					<ul class ="actions">
+						<li><input type = "submit" name = "submit" value="Upload" class = "special"></li>
+						<li><input type = "reset" value = "Reset"></li>
+					</ul>
+			</div>
 	</form>
 </div><?php }
 ?>
+
+	<section id="footer">
+				<ul class="icons">
+					<li><a href="#" class="icon alt fa-twitter"><span class="label">Twitter</span></a></li>
+					<li><a href="#" class="icon alt fa-facebook"><span class="label">Facebook</span></a></li>
+					<li><a href="#" class="icon alt fa-instagram"><span class="label">Instagram</span></a></li>
+					<li><a href="#" class="icon alt fa-github"><span class="label">GitHub</span></a></li>
+					<li><a href="#" class="icon alt fa-envelope"><span class="label">Email</span></a></li>
+				</ul>
+			</section>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
 
 </body>
 </html>

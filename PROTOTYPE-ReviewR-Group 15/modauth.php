@@ -1,4 +1,5 @@
 <?php
+require_once(__DIR__.'/auth.php');
 $id = $_SESSION['user'];
 $check = "SELECT * FROM users WHERE user_id = '$id' AND score >= 40";
 

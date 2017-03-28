@@ -1,4 +1,5 @@
 <?php
+	require_once(__DIR__.'/auth.php');
 	require_once __DIR__.'/dbcontroller.class.php';
 	include '/Test1.php';
 ?>
@@ -79,14 +80,26 @@ if (!isset($_POST) || count($_POST) == 0){?>
 	<section id= "header">
 		<div class = "inner">
 			<span class ="icon major fa-cloud"></span>
-			<h1> Hi, We are <strong>ReviewR</strong> we help you</h1>
-			<p> stuff about stuff</p>
+			<h1> This where you post your work for review.</h1>
 			<ul class ="actions">
-				<li><a href= "UploadTask.html" class="button scrolly">Discover</a><li>
+				<li><a href= "ReviewR.php" class="button scrolly">Homepage</a><li>
 				<br>
 			 </ul>
 		</div>
 	</section>
+	
+	<section>
+		<div class="align-center">
+			<br>
+			<a href="Profile.php" class="button">Profile</a>
+			<a href="search.php" class="button">Search</a>
+			<a href="logout.php" class="button">Logout</a>
+			<br>
+			<br>
+			<?php include(__DIR__.'/modauth.php'); ?>
+		</div>
+	</section>
+	
 	<section id ="one" class ="main style1">
 	<div class ="container">
 		<header class = "major special">

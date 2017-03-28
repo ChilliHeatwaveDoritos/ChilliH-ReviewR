@@ -1,5 +1,5 @@
 <?php
-	include(__DIR__.'/auth.php');
+	require_once(__DIR__.'/auth.php');
 	require_once __DIR__.'/dbcontroller.class.php';
 ?>
 
@@ -55,7 +55,7 @@
 					              <a href='ReviewR.php#five' class="button scrolly profile">Claim A Task</a>
 					         </li>
 							 <li>
-					              <a href='ReviewR.php#six' class="button scrolly profile">Submit a Task</a>
+					              <a href='Upload.php' class="button scrolly profile">Submit a Task</a>
 					         </li>
 							 <li>
 					              <a href='' class="button scrolly profile">View Claimed Tasks</a>
