@@ -11,16 +11,16 @@ class DBController {
 	}
 	
 	function connectDB() {
-		$set = mysqli_connect($this->host,$this->user,$this->password,$this->database);
-		if (!$set) {
+		$conn = mysqli_connect($this->host,$this->user,$this->password,$this->database);
+		if (!$conn) {
 			echo "Unable to connect to database - " . date('H:i:s');
         }
-		return $set;
+		return $conn;
 	}
 	
-	/*function runQuery($query) {
-		$result = mysql_query($this->conn,$query);
-		while($row=mysql_fetch_assoc($result)) {
+	function runQuery($query) {
+		$result = mysqli_query($this->conn,$query);
+		while($row=mysqli_fetch_assoc($result)) {
 			$resultset[] = $row;
 		}		
 		if(!empty($resultset))
@@ -28,36 +28,40 @@ class DBController {
 	}
 	
 	function numRows($query) {
-		$result  = mysql_query($this->conn,$query);
-		$rowcount = mysql_num_rows($result);
+		$result  = mysqli_query($this->conn,$query);
+		$rowcount = mysqli_num_rows($result);
 		return $rowcount;	
 	}
 	
 	function updateQuery($query) {
-		$result = mysql_query($this->conn,$query);
+		$result = mysqli_query($this->conn,$query);
 		if (!$result) {
-			die('Invalid query: ' . mysql_error());
+			die('Invalid query: ' . mysqli_error($conn));
 		} else {
 			return $result;
-		}
-	}*/
-	
-	function insertQuery($query) {
-		if (mysqli_query($this->conn, $query)) {
-			echo "New record created successfully";
-		} 
-		else {
-			echo "Error: " . $sql . "<br>" . mysqli_error($conn);
 		}
 	}
 	
-	/*function deleteQuery($query) {
-		$result = mysql_query($this->conn,$query);
+	function insertQuery($query) {
+		if (mysqli_query($this->conn, $query)) {
+			return true;
+		} 
+		else {
+			echo "Error: " . $query . "<br>" . mysqli_error($this->conn);
+		}
+	}
+	
+	function getConn() {
+      return $this->conn;
+    }
+	
+	function deleteQuery($query) {
+		$result = mysqli_query($this->conn,$query);
 		if (!$result) {
-			die('Invalid query: ' . mysql_error());
+			die('Invalid query: ' . mysqli_error($this->conn));
 		} else {
 			return $result;
 		}
-	}*/
+	}
 }
 ?>

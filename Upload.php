@@ -1,20 +1,22 @@
 <?php
+	require_once(__DIR__.'/auth.php');
 	require_once __DIR__.'/dbcontroller.class.php';
+	include '/Test1.php';
 ?>
-
 
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>Registration</title>
-<link rel="stylesheet" href="style.css" />
+<title>Upload</title>
+<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="assets/css/main.css" />
 </head>
 <body>
 
 <?php
 if (isset($_POST) && count ($_POST) > 0){
-	$poster_id = stripslashes($_POST["PosterID"]);
+	$poster_id = $_SESSION['user'];
 	$title = stripslashes($_POST["TaskTitle"]);
 	$description = stripslashes($_POST["TaskDescription"]);
 	$type = stripslashes($_POST["type"]);
@@ -29,68 +31,218 @@ if (isset($_POST) && count ($_POST) > 0){
 	$due_date= stripslashes($_POST["dueDate"]);
 	
 	$db_request = new DBController();
-	/*$check = "SELECT * FROM `users` WHERE `email` = '$email'";
-	/*$rows = $db_request->numRows($check);
-	if($rows > 0){
-		print("<h2> This email already exists! Please log in </h2>");
-	}
-	if ($password1 != $password2){
-        printf("<h2> Passwords do not match. </h2>");
-	}
-	else{*/
-		$query = "INSERT INTO tasks (poster_id,title, type, description, pages, words, format, tag1,tag2,tag3,tag4,create_date,due_date)VALUES ('$poster_id','$title', '$type', '$description', '$pages',
-		'$words','$format' ,'$tag1','$tag2','$tag3','$tag4', '$create_date','$due_date');";
-		$db_request->insertQuery($query);
+
+		
+		
 		/*echo("INSERT INTO tasks (poster_id,title, type, description, pages, words, format, tag1,tag2,tag3,tag4,create_date,due_date)VALUES ('$poster_id','$title', '$type', '$description', '$pages',
 		'$words','$format' ,'$tag1','$tag2','$tag3','$tag4', '$create_date','$due_date');");*/
+		
+		//TESTING FILE UPLOAD TO A FOLDER BELOW
+		
+		$target_dir = "uploads/";
+		$target_file = $target_dir . basename($_FILES["File"]["name"]);
+		$uploadOk = 1;
+		$fileType = pathinfo($target_file,PATHINFO_EXTENSION);
+		
+		// Check if file already exists
+		if (file_exists($target_file)) {
+			echo "Sorry, file already exists.";
+			$uploadOk = 0;
+		}
+		// Check file size
+		else if ($_FILES["File"]["size"] > 500000) {
+			echo "Sorry, your file is too large.";
+			$uploadOk = 0;
+		}
+		// Allow certain file formats
+		else if($fileType != "doc" && $fileType != "docx" && $fileType != "pdf") {
+			echo "Sorry, only doc, docx & pdf files are allowed.";
+			$uploadOk = 0;
+		}
+		
+		else if($uploadOk == 0){
+			echo "File upload failed!";
+		} else{
+			if (move_uploaded_file($_FILES["File"]["tmp_name"], $target_file)) {
+				echo "The file ". basename( $_FILES["File"]["name"]). " has been uploaded.";
+				$query = "INSERT INTO tasks (poster_id,title, type, description, pages, words, format, tag1,tag2,tag3,tag4,create_date,due_date)VALUES ('$poster_id','$title', '$type', '$description', '$pages',
+				'$words','$format' ,'$tag1','$tag2','$tag3','$tag4', '$create_date','$due_date');";
+				$db_request->insertQuery($query);
+			} else {
+				echo "Sorry, there was an error uploading your file.";
+				$query = "INSERT INTO tasks (poster_id,title, type, description, pages, words, format, tag1,tag2,tag3,tag4,create_date,due_date)VALUES ('$poster_id','$title', '$type', '$description', '$pages',
+				'$words','$format' ,'$tag1','$tag2','$tag3','$tag4', '$create_date','$due_date');";
+				$db_request->insertQuery($query);
+			}
+		}
+		header("Location: ./ReviewR.php");
 	}
 
 ?>
 <?php
 if (!isset($_POST) || count($_POST) == 0){?>
-	<div class="form">
-	<h1>Upload</h1>
-	<form name="Upload" action="" method="post">
-	<input type="text" name="TaskTitle" placeholder="Title" required />
-	<input type="text" name="PosterID" placeholder="Id" required />
-	<textarea rows ="10" cols="50" name = "TaskDescription"></textarea>
-	<input type="text" name="type" placeholder="Type" required />
-	<input type="text" name="Pages" placeholder="Pages" required />
-	<input type="text" name="words" placeholder="word count" required />
-	<select name ="format">
-				  <option value="pdf">pdf</option>
-				  <option value="doc">doc</option>
-				  <option value="pptx">pptx</option>
-				  <option value="xml">xml</option>
-				</select>
-	<select name ="tag1">
-				  <option value="1">Literature</option>
-				  <option value="2">Article</option>
-				  <option value="3">essay</option>
-				  <option value="4">Computer Science</option>
-				</select>
-	<select name ="tag2">
-				  <option value="1">Literature</option>
-				  <option value="2">Article</option>
-				  <option value="3">essay</option>
-				  <option value="4">Computer Science</option>
-				</select>
-	<select name ="tag3">
-				  <option value="1">Literature</option>
-				  <option value="2">Article</option>
-				  <option value="3">essay</option>
-				  <option value="4">Computer Science</option>
-				</select>			
-	<select name ="tag4">
-				  <option value="1">Literature</option>
-				  <option value="2">Article</option>
-				  <option value="3">essay</option>
-				  <option value="4">Computer Science</option>
-				</select>
-	<input type="date" name="dueDate" placeholder="date" required />
-	<input type="submit" name="submit" value="Upload" />
-	</form>
-</div><?php }?>
+	<section id= "header">
+		<div class = "inner">
+			<span class ="icon major fa-cloud"></span>
+			<h1> This where you post your work for review.</h1>
+			<ul class ="actions">
+				<li><a href= "ReviewR.php" class="button scrolly">Homepage</a><li>
+				<br>
+			 </ul>
+		</div>
+	</section>
+	
+	<section>
+		<div class="align-center">
+			<br>
+			<a href="Profile.php" class="button">Profile</a>
+			<a href="search.php" class="button">Search</a>
+			<a href="logout.php" class="button">Logout</a>
+			<br>
+			<br>
+			<?php include(__DIR__.'/modauth.php'); ?>
+		</div>
+	</section>
+	
+	<section id ="one" class ="main style1">
+	<div class ="container">
+		<header class = "major special">
+			<h1>Upload A Task<br /></h1>
+		</header>
+		<form method="post" enctype="multipart/form-data">
+			<div class ="row uniform 50%">
+				<div class = "6u 12u$(small)">
+					<input type = "text" name = "TaskTitle" placeholder="Title" required/>
+				</div>
+				<div class = "12u$">
+					<textarea rows = "6" name = "TaskDescription"></textarea>
+				</div>
+				<div class = "6u 12u$(small)">	
+					<div class ="select-wrapper">
+						<select name = "tag1" id = "tag"> </select>
+					</div>
+				</div>
+				<div class = "6u 12u$(small)">	
+					<div class ="select-wrapper">
+						<select name = "tag2" id = "tag2"> </select>
+					</div>
+				</div>
+				<div class = "6u 12u$(small)">	
+					<div class ="select-wrapper">
+						<select name = "tag3" id = "tag3"> </select>
+					</div>
+				</div>
+				<div class = "6u 12u$(small)">	
+					<div class ="select-wrapper">
+						<select name = "tag4" id = "tag4"> </select>
+					</div>
+				</div>
+				<div class = "6u 12u$(small)">
+					<input type = "text" name = "type" placeholder="Type" required/>
+				</div>
+				<div class = "6u 12u$(small)">
+					<div class = "select-wrapper">
+						<select name = "format">
+							<option value="docx">docx</option>
+						  <option value="doc">doc</option>
+						  <option value="pdf">pdf</option>
+						</select>
+					</div>
+				</div>
+				<div class = "6u 12u$(small)">
+					<input type = "text" name = "Pages" placeholder="No. of Pages" required/>
+				</div>
+				<div class = "6u 12u$(small)">
+					<input type = "text" name = "words" placeholder="No. of Words" required/>
+				</div>	
+				<div class = "6u 12u$(small)">	
+					<input type = "date" name = "dueDate" placeholder="date" required/>
+				</div>
+				<div class = "12u$">
+					<input type = "file" name = "File" placeholder="file">
+				</div>
+				<div class = "align-left">
+					<ul class ="actions">
+						<li><input type = "submit" name = "submit" value="Upload" class = "special"></li>
+					</ul>
+				</div>
+			</div>
+		</form>
+		<script>
+	var tagArray = <?php echo json_encode($result); ?>;
+	var count = <?php echo $countArray; ?>;
+		(function() {
+			var elm = document.getElementById('tag'),
+				df = document.createDocumentFragment();
+			for (var i = 0; i < count; i++) {
+				var option = document.createElement('option');
+				option.value = tagArray[i]["tag_id"];
+				option.appendChild(document.createTextNode(tagArray[i]["value"]));
+				df.appendChild(option);
+			}
+			elm.appendChild(df);
+		}());
+		
+	</script>
+	<script>
+	(function() {
+			var elm = document.getElementById('tag2'),
+				df = document.createDocumentFragment();
+			for (var i = 0; i < count; i++) {
+				var option = document.createElement('option');
+				option.value = tagArray[i]["tag_id"];
+				option.appendChild(document.createTextNode(tagArray[i]["value"]));
+				df.appendChild(option);
+			}
+			elm.appendChild(df);
+		}());
+	</script>
+	<script>
+	(function() {
+			var elm = document.getElementById('tag3'),
+				df = document.createDocumentFragment();
+			for (var i = 0; i < count; i++) {
+				var option = document.createElement('option');
+				option.value = tagArray[i]["tag_id"];
+				option.appendChild(document.createTextNode(tagArray[i]["value"]));
+				df.appendChild(option);
+			}
+			elm.appendChild(df);
+		}());
+	</script>
+	<script>
+	(function() {
+			var elm = document.getElementById('tag4'),
+				df = document.createDocumentFragment();
+			for (var i = 0; i < count; i++) {
+				var option = document.createElement('option');
+				option.value = tagArray[i]["tag_id"];
+				option.appendChild(document.createTextNode(tagArray[i]["value"]));
+				df.appendChild(option);
+			}
+			elm.appendChild(df);
+		}());
+	</script>
+		</div>
+	</section>
+</div><?php }
+?>
+<section id="footer">
+				<ul class="icons">
+					<li><a href="#" class="icon alt fa-twitter"><span class="label">Twitter</span></a></li>
+					<li><a href="#" class="icon alt fa-facebook"><span class="label">Facebook</span></a></li>
+					<li><a href="#" class="icon alt fa-instagram"><span class="label">Instagram</span></a></li>
+					<li><a href="#" class="icon alt fa-github"><span class="label">GitHub</span></a></li>
+					<li><a href="#" class="icon alt fa-envelope"><span class="label">Email</span></a></li>
+				</ul>
+			</section>
 
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
 </body>
 </html>
