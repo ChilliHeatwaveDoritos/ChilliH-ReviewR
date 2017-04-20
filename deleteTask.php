@@ -29,27 +29,19 @@
 
 <?php
 if (isset($_POST) && count ($_POST) > 0){
-	$id = stripslashes($_POST["ID"]);
-	$create_date = date("Y-m-d H:i:s");
-	$reason= stripslashes($_POST["reason"]);
+	$task_id = stripslashes($_POST["ID"]);
 	
 	$db_request = new DBController();
+	$checkTask = "SELECT * FROM tasks WHERE task_id = $task_id";
+	$result = $db_request->numRows($checkTask);
 	
-	$getEmail = "Select email from users where user_id ='$id'";
-	
-	$conn =$db_request->getConn();
-	$result = $db_request->runQuery($getEmail);
-	
-	if($result){
-		$ban_email = $result[0]["email"];
-		$ban_query = "INSERT INTO banned_users(user_id,email,date,reason)VALUES('$id','$ban_email','$create_date','$reason');";
-		$db_request->insertQuery($ban_query);
-		$delete_query = "DELETE FROM users WHERE user_id = '$id'";
+	if($result > 0){
+		$delete_query = "DELETE FROM tasks WHERE task_id = '$task_id'";
 		$db_request->insertQuery($delete_query);
 		header("Location: modpage.php");
 	}
 	else{
-		echo "<br>Error. User may not exist.<a href='ban.php' class='button'>return</a><br><br>";
+		echo "<br>Error. Task may not exist! <a href='ban.php' class='button'>return</a><br><br>";
 	}
 }?>
 <?php
@@ -57,10 +49,10 @@ if (!isset($_POST) || count($_POST) == 0){?>
 	<section id= "header">
 		<div class = "inner">
 			<span class ="icon major fa-cloud"></span>
-			<h1>BAN USER</h1>
+			<h1>Remove Task</h1>
 		</div>
 	</section>
-	<section>
+	<section class="container">
 		<div class="align-center">
 			<br>
 			<a href="ReviewR.php" class="button">Homepage</a>
@@ -69,20 +61,18 @@ if (!isset($_POST) || count($_POST) == 0){?>
 			<br>
 			<br>
 			<?php include(__DIR__.'/modauth.php'); ?>
+			<br>
 		</div>
-	</section>
-	<header class = "major special">
-			<h1><br>Ban</h1>
-		</header>
-	<div class="container">
-		<form name="Ban action" method="post">
-				User ID<input type="text" name="ID" placeholder="ID" required/>
-				Reason<textarea rows="6" name ="reason" placeholder="Reason" maxlength="300"></textarea>
+		<br>
+		
+		<div class="container">
+		<form name="remove task" method="post">
+				Task ID<input type="text" name="ID" placeholder="ID" required/>
 				<ul class ="actions">
-						<br><li><input type = "submit" name = "submit" value="BAN USER" class = "button fit special"></li>
+						<br><li><input type = "submit" name = "submit" value="Remove Task" class = "button fit special"></li>
 				</ul>
 		</form>
-	</div>
+	</section>
 <?php }?>
 
 	<section id="footer">

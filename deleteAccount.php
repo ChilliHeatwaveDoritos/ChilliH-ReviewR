@@ -1,16 +1,7 @@
+
 <?php
-	require_once __DIR__.'/dbcontroller.class.php';
-	require_once(__DIR__.'/auth.php');
-	
-	$id = $_SESSION['user'];
-	$check = "SELECT * FROM users WHERE user_id = '$id' AND score >= 40";
-
-	$db_request = new DBController();
-	$rows = $db_request->numRows($check);
-
-	if($rows == 0){
-		header("Location: ReviewR.php");
-	}
+require_once __DIR__.'/dbcontroller.class.php';
+require_once(__DIR__.'/auth.php');
 ?>
 
 
@@ -57,7 +48,7 @@ if (!isset($_POST) || count($_POST) == 0){?>
 	<section id= "header">
 		<div class = "inner">
 			<span class ="icon major fa-cloud"></span>
-			<h1>BAN USER</h1>
+			<h1>DELETE ACCOUNT</h1>
 		</div>
 	</section>
 	<section>
@@ -71,18 +62,16 @@ if (!isset($_POST) || count($_POST) == 0){?>
 			<?php include(__DIR__.'/modauth.php'); ?>
 		</div>
 	</section>
-	<header class = "major special">
-			<h1><br>Ban</h1>
+	<section class="container">
+		<header class = "special">
+			<br><h1>ARE YOU SURE?</h1>
+			<h3>Deleting your account will result in the loss of all tasks you have created and claimed.<br> You <strong> WILL NOT </strong> be able to log in using this account again!</h2>
+			<ul class ="actions">
+				<br><li><a href="accountRemover.php" class="button fit special">Yes, I want to delete my account.</a></li>
+				<li><a href="profile.php" class="button fit">NO! Please don't delete my account!!!</a></li>
+			</ul>
 		</header>
-	<div class="container">
-		<form name="Ban action" method="post">
-				User ID<input type="text" name="ID" placeholder="ID" required/>
-				Reason<textarea rows="6" name ="reason" placeholder="Reason" maxlength="300"></textarea>
-				<ul class ="actions">
-						<br><li><input type = "submit" name = "submit" value="BAN USER" class = "button fit special"></li>
-				</ul>
-		</form>
-	</div>
+	</section>
 <?php }?>
 
 	<section id="footer">

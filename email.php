@@ -26,38 +26,36 @@
 		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
 </head>
 <body>
+<?php
+$db_request = new DBController();
+	
+		if (isset($_POST) && count ($_POST) > 0){
+			$poster_id = stripslashes($_POST["poster_id"]);
+			$task_id = stripslashes($_POST["task_id"]);
+			if($poster_id == null)
+				header("Location: profile.php#two");
+			
+			$getPEmail = "SELECT email FROM users WHERE user_id = $poster_id";
+			$posterEmail = $db_request->runQuery($getPEmail);
+			$getSEmail = "SELECT email FROM users WHERE user_id = $id";
+			$senderEmail = $db_request->runQuery($getSEmail);
+			
+			$getRName = "SELECT fname FROM users WHERE user_id = $id";
+			$rName = $db_request->runQuery($getRName);
+			$getFname = "SELECT fname FROM users WHERE user_id = $poster_id";
+			$getSname = "SELECT sname FROM users WHERE user_id = $poster_id";
+			$fname = $db_request->runQuery($getFname);
+			$sname = $db_request->runQuery($getSname);
+			
+			$getTitle = "SELECT title FROM tasks WHERE task_id = $task_id";
+			$title = $db_request->runQuery($getTitle);
+		}
+?>
 
-<?php
-if (isset($_POST) && count ($_POST) > 0){
-	$id = stripslashes($_POST["ID"]);
-	$create_date = date("Y-m-d H:i:s");
-	$reason= stripslashes($_POST["reason"]);
-	
-	$db_request = new DBController();
-	
-	$getEmail = "Select email from users where user_id ='$id'";
-	
-	$conn =$db_request->getConn();
-	$result = $db_request->runQuery($getEmail);
-	
-	if($result){
-		$ban_email = $result[0]["email"];
-		$ban_query = "INSERT INTO banned_users(user_id,email,date,reason)VALUES('$id','$ban_email','$create_date','$reason');";
-		$db_request->insertQuery($ban_query);
-		$delete_query = "DELETE FROM users WHERE user_id = '$id'";
-		$db_request->insertQuery($delete_query);
-		header("Location: modpage.php");
-	}
-	else{
-		echo "<br>Error. User may not exist.<a href='ban.php' class='button'>return</a><br><br>";
-	}
-}?>
-<?php
-if (!isset($_POST) || count($_POST) == 0){?>
 	<section id= "header">
 		<div class = "inner">
 			<span class ="icon major fa-cloud"></span>
-			<h1>BAN USER</h1>
+			<h1>Document Request</h1>
 		</div>
 	</section>
 	<section>
@@ -72,18 +70,18 @@ if (!isset($_POST) || count($_POST) == 0){?>
 		</div>
 	</section>
 	<header class = "major special">
-			<h1><br>Ban</h1>
+			<br><br>
+			<h1>Full Document Request</h1>
 		</header>
 	<div class="container">
+		<?php echo "To: <strong>", $posterEmail[0]['email'],"</strong><br> From: <strong>", $senderEmail[0]['email'], "</strong><br>Re: <strong>[ReviewR] Requesting Full Document for '", $title[0]['title'], "'</strong>";?>
 		<form name="Ban action" method="post">
-				User ID<input type="text" name="ID" placeholder="ID" required/>
-				Reason<textarea rows="6" name ="reason" placeholder="Reason" maxlength="300"></textarea>
+				<br><strong>Template</strong><textarea rows="6" name ="reason" value="" maxlength="300"><?php echo "Hi ", $fname[0]['fname'], ",\n\nI took an interest in your post '", $title[0]['title'], "' and would like to request the full to file to provide my input on your work.\n\n Thank you,\nKind regards,\n", $rName[0]['fname'];?></textarea>
 				<ul class ="actions">
-						<br><li><input type = "submit" name = "submit" value="BAN USER" class = "button fit special"></li>
+						<br><li><input type = "submit" name = "submit" value="Request File" class = "button fit special" action="profile.php"></li>
 				</ul>
 		</form>
 	</div>
-<?php }?>
 
 	<section id="footer">
 				<ul class="icons">

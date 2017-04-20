@@ -12,7 +12,7 @@
 			$cancelQuery= "DELETE FROM `claimed_tasks` WHERE task_id = '$task_id'";
 			$db_request->insertQuery($cancelQuery);
 			
-			$statusQuery = "UPDATE tasks SET status='0' WHERE task_id = '$task_id'";
+			$statusQuery = "UPDATE tasks SET status='4' WHERE task_id = '$task_id'";
 			$db_request->insertQuery($statusQuery);
 			//Lost 15 points for cancelling
 			$userScoreQuery = "Select score from users WHERE user_id = $id";
@@ -20,6 +20,6 @@
 			$newScore = ($score[0]["score"] - 15);
 			$scoreQuery = "UPDATE users SET score =$newScore WHERE user_id = $id";
 			$db_request->insertQuery($scoreQuery);
-			header("Location: ./ReviewR.php");
+			header("Location: ./Profile.php#two");
 		}
 ?>

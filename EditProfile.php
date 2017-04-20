@@ -19,36 +19,45 @@
 	<section id= "header">
 		<div class = "inner">
 			<span class ="icon major fa-cloud"></span>
-			<h1> Hi, We are <strong>ReviewR</strong> we help you</h1>
-			<p> stuff about other stuff</p>
+			<h1>Make changes to your profile</h1>
 		</div>
 	</section>
+	
+	<section>
+		<div class="align-center">
+			<br>
+			<a href="ReviewR.php" class="button">Homepage</a>
+			<a href="filterPage.php" class="button">Search</a>
+			<a href="logout.php" class="button">Logout</a>
+		</div>
+	</section>
+		
 	<section id ="one" class ="main style1 special">
 		<div class = "container">
 				<header class = "major special">
 			<h1>Edit Profile<br /></h1>
 		</header>
+		<!-- Form Editing Profile -->
 		<form method="post" enctype="multipart/form-data" action ="Edit.php">
-			<div class ="row uniform 50%">
-				
-				<div class = "6u 12u$(small)">	
-					<div class ="select-wrapper">
-						<select name = "format">
-									  <option value="fname">First Name</option>
-									  <option value="sname">Surname</option>
-									  <option value="email">Email</option>
-									  <option value="password">Password</option>
-									</select>
+			<div class='container'>	
+				<div class ="row uniform 50%">
+					<div class = "6u 12u$(small)">	
+							<select name = "format">
+										  <option value="fname">First Name</option>
+										  <option value="sname">Surname</option>
+										  <option value="email">Email</option>
+										  <option value="password">Password</option>
+										</select>
+						</div>
+					<div class = "6u 12u$(small)">
+						<input type = "text" name = "new" placeholder="New Entry" required/>
 					</div>
-				</div>
-				<div class = "6u 12u$(small)">
-					<input type = "text" name = "new" placeholder="New Entry" required/>
-				</div>
-				<div>
-					<ul class ="actions">
-						<li><input type = "submit" value="Change"></li>
-						<li><input type = "reset" value = "Reset"></li>
-					</ul>
+					<div>
+						<ul class ="actions">
+							<li><input type = "submit" value="Change" class="button fit special"></li>
+							<li><input type = "reset" value = "Reset" class="button fit special"></li>
+						</ul>
+					</div>
 				</div>
 			</div>
 		</form>		
@@ -68,7 +77,7 @@
 				</ul>
 			</section>
 
-		<!-- Scripts -->
+		<!-- Scripts from the CSS -->
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.scrolly.min.js"></script>
 			<script src="assets/js/skel.min.js"></script>
