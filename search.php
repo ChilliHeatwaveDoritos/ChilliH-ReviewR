@@ -39,7 +39,7 @@
 		
 		
 		
-	}//by zach fuck you all
+	}
 ?>
 	
 	

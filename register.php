@@ -39,35 +39,57 @@ if (isset($_POST) && count ($_POST) > 0){
 	$jdate = date("Y-m-d H:i:s");
 	
 	$db_request = new DBController();
-	$check = "SELECT * FROM `users` WHERE `email` = '$email'";
-	$rows = $db_request->numRows($check);
-	if($rows > 0){
-		printf("<h2 class='err'> This email already exists! Please <a href='landing-login.php'> Log in!<a/></h2>");
+	$validNames = array("@ul.ie", "@studentmail.ul.ie");
+	$validEmail = false;
+	foreach($validNames as $x){
+		if(strstr($email, $x)){
+			$validEmail = true;
+		}
 	}
-	else if ($password1 != $password2){
-        printf("<h2 class='err'> Passwords do not match, please try<a href='register.php'> again.<a/></h2>");
+	if($validEmail == false){
+		printf("<h2 class='err'> Invalid email domain! [Valid: @ul.ie and @studentmail.ul.ie] <br>Please <a href='register.php'> try again!<a/></h2>");
 	}
-	/* email verification
-	else if((mail($email,"test","test"))==0)
-	{	 
-		printf("<h2 class='err'> Email doesn't exist, please try<a href='register.php'> again with valid email.<a/></h2>");
-	}*/
 	else{
-		$siteSalt  = "group15";
-        $saltedHash = hash('sha256', $password1.$siteSalt);
-		$query = "INSERT INTO users (fname, sname, sid, email, major, jdate, password) VALUES ('$fname', '$sname', '$sid', '$email',
-		'$major', '$jdate', '$saltedHash')";
-		$db_request->insertQuery($query);
-		header("Location: landing-login.php");
-		
-		//verification code being sent to mail
-		/*$code = generateRandomString();
-		$msg = "Please enter the following code and your given email address on the verification page to verify your account:\n".$code;
-		mail($email,"ReviewR Verification",$msg);
-		$query2 = "INSERT INTO user_codes (email,code)VALUES($email,$code)";
-		$result2 = $db_request->insertQuery($query2);*/
-		
-		
+		$check = "SELECT * FROM `users` WHERE `email` = '$email'";
+		$rows = $db_request->numRows($check);
+		$check2 = "SELECT * FROM banned_users WHERE email = '$email'";
+		$rows2 = $db_request->numRows($check2);
+		if($rows > 0){
+			printf("<h2 class='err'> This email already exists! Please <a href='landing-login.php'> Log in!<a/></h2>");
+		}
+		else if($rows2 > 0){
+			$get = "SELECT reason from banned_users WHERE email = '$email'";
+			$result = $db_request->runQuery($get);
+			$reason = $result[0]['reason'];
+			echo "<div style='color:white;' class='form'>
+			<br><br>
+			<h2>This email has been banned.<br> Reason: '$reason'</h2></div>";
+		}
+		else if ($password1 != $password2){
+			printf("<h2 class='err'> Passwords do not match, please try<a href='register.php'> again.<a/></h2>");
+		}
+		/* email verification
+		else if((mail($email,"test","test"))==0)
+		{	 
+			printf("<h2 class='err'> Email doesn't exist, please try<a href='register.php'> again with valid email.<a/></h2>");
+		}*/
+		else{
+			$siteSalt  = "group15";
+			$saltedHash = hash('sha256', $password1.$siteSalt);
+			$query = "INSERT INTO users (fname, sname, sid, email, major, jdate, password) VALUES ('$fname', '$sname', '$sid', '$email',
+			'$major', '$jdate', '$saltedHash')";
+			$db_request->insertQuery($query);
+			header("Location: landing-login.php");
+			
+			//verification code being sent to mail
+			/*$code = generateRandomString();
+			$msg = "Please enter the following code and your given email address on the verification page to verify your account:\n".$code;
+			mail($email,"ReviewR Verification",$msg);
+			$query2 = "INSERT INTO user_codes (email,code)VALUES($email,$code)";
+			$result2 = $db_request->insertQuery($query2);*/
+			
+			
+		}
 	}
 }
 ?>
@@ -77,11 +99,11 @@ if (!isset($_POST) || count($_POST) == 0){?>
 	<br>
 	<div class="form">
 	<h2 class="title4">Registration</h2>
-	<form name="registration" action="" onsubmit="Validate()" method="post">
+	<form name="registration" onsubmit="Validate()" method="post">
 	<input type="text" name="first_name" maxlength="32" placeholder="First Name" required />
 	<input type="text" name="last_name" maxlength="32" placeholder="Last Name" required />
-	<input type="email" name="email" maxlength="255" placeholder="Email" required />
-	<input type="text" name="student/staff_id" maxlength="8" placeholder="Student/Staff ID" required />
+	<input type="email" name="email" maxlength="255" placeholder="...@ul.ie/...@studentmail.ul.ie" required />
+	<input type="text" name="student/staff_id" onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="8" placeholder="Student/Staff ID" required />
 	<input type="text" name="major" maxlength= "32" placeholder="Major Subject" required />
 	<input type="password" name="password1" maxlength="32" placeholder="Password" required />
 	<input type="password" name="password2" maxlength="32" placeholder="Please re-enter your password" required />

@@ -79,7 +79,7 @@ if (!isset($_POST) || count($_POST) == 0){?>
 					</section>
 				</div>
 	</section>
-	
+	<!-- Script for dynamically printing the information of each task of the task array and the forms that will claim the tasks or will show information of the tasks -->
 	<script>
 	var tagArray = <?php echo json_encode($result1); ?>;
 	var count = <?php echo $countArray; ?>;
@@ -88,7 +88,7 @@ if (!isset($_POST) || count($_POST) == 0){?>
 
 				df = document.createDocumentFragment();
 			for (var i = 0; i < tagArray.length; i++) {
-				if(tagArray[i]["status"] == "0")
+				if(tagArray[i]["status"] == "0" || tagArray[i]["status"] == '4')
 				{
 				var div = document.createElement("div");
 				var div2 = document.createElement("div");
@@ -111,12 +111,12 @@ if (!isset($_POST) || count($_POST) == 0){?>
 				
 
 				
-				
+				//Prints the title of each task dynamically
 				title.appendChild(document.createTextNode(tagArray[i]["title"]));
 				div.appendChild(title);
 				df.appendChild(div);
-				description.appendChild(document.createTextNode("Descriptions: "+tagArray[i]["description"]));
-				
+				description.appendChild(document.createTextNode("Description: "+tagArray[i]["description"]));
+				//Prints the Description of the Tasks
 					description.appendChild(document.createElement("br"));
 				description.appendChild(document.createTextNode("Pages: "+tagArray[i]["pages"]));
 					description.appendChild(document.createElement("br"));
@@ -130,7 +130,7 @@ if (!isset($_POST) || count($_POST) == 0){?>
 				df.appendChild(div);
 				
 				
-			///More Details form
+				//More Details form
 				moreDetailsButton.setAttribute("type","submit");
 				moreDetailsButton.value="More Details";				
 				moreDetailsButton.className ="uniform row";				
@@ -198,7 +198,7 @@ if (!isset($_POST) || count($_POST) == 0){?>
 				</ul>
 			</section>
 
-		<!-- Scripts -->
+		<!-- Scripts from the CSS -->
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.scrolly.min.js"></script>
 			<script src="assets/js/skel.min.js"></script>

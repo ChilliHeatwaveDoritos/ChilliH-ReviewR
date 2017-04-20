@@ -37,7 +37,7 @@
 					<br>
 				</div>
 			</section>
-			<section>
+			<section class="container">
 			<br>
 				<h2>Filters</h2>
 					<form name="filter" method="post" enctype="multipart/form-data">
@@ -48,6 +48,7 @@
 									<select name = "type">
 									  <option value="tag">Tag</option>
 									  <option value="title">Title</option>
+									  <option value="description">Description</option>
 									  <option value="type">Type</option>
 									  <option value="poster">Poster ID</option>
 									</select>
@@ -57,7 +58,7 @@
 								<input type = "text" name = "filterValue" placeholder="Filter" required/>
 							</div>
 							<div>
-								<br><input type = "submit" value="Change Filter" class="uniform row">
+								<br><input type = "submit" value="Change Filter" class="button fit special">
 							</div>
 						</div>
 					</form>		
@@ -75,26 +76,53 @@
 				}
 				
 				if($type == "tag"){
-					$sqlTag = "SELECT * FROM tasks WHERE tag1='$filter' OR tag2='$filter' OR tag3='$filter' OR tag4='$filter' AND status = 0";
+					$sqlTag = "SELECT * FROM tasks WHERE (tag1='$filter' OR tag2='$filter' OR tag3='$filter' OR tag4='$filter') AND (status = 0 or status = 4) AND (poster_id < '$id' OR poster_id > '$id') ORDER BY due_date ASC";
 					$tagResult = $db_request->runQuery($sqlTag);
+					if(empty($tagResult)){
+						$tagResult[]="0 Results To Display";
+					}
 				}
 				else if($type == "title"){
-					$sqlTitle = "SELECT * FROM tasks WHERE status = 0";
+					$sqlTitle = "SELECT * FROM tasks WHERE (status = 0 or status = 4) AND (poster_id < '$id' OR poster_id > '$id') ORDER BY due_date ASC";
 					$tResult = $db_request->runQuery($sqlTitle);
 					$titleResult = [];
+					
 					foreach($tResult as $tValue){
 						if(!(strpos(strtolower($tValue['title']),strtolower($val)) === false)){
 							array_push($titleResult, $tValue);
 						}	
 					}
+					if(empty($titleResult)){
+						$titleResult[]="0 Results To Display";
+					}
 				}
 				else if($type == "type"){
-					$sqlType = "SELECT * FROM tasks WHERE type ='$val' AND status = 0";
+					$sqlType = "SELECT * FROM tasks WHERE type ='$val' AND (status = 0 or status = 4) AND (poster_id < '$id' OR poster_id > '$id') ORDER BY due_date ASC";
 					$typeResult = $db_request->runQuery($sqlType);
+					if(empty($typeResult)){
+						$typeResult[]="0 Results To Display";
+					}
 				}
 				else if($type == "poster"){
-					$sqlPoster = "SELECT * FROM tasks WHERE poster_id='$val' AND status = 0";
+					$sqlPoster = "SELECT * FROM tasks WHERE poster_id='$val' AND (status = 0 or status = 4) AND (poster_id < '$id' OR poster_id > '$id') ORDER BY due_date ASC";
 					$posterResult = $db_request->runQuery($sqlPoster);
+					if(empty($posterResult)){
+						$posterResult[]="0 Results To Display";
+					}
+				}
+				else if($type == "description"){
+					$sqlDesc = "SELECT * FROM tasks WHERE (status = 0 or status = 4) AND (poster_id < '$id' OR poster_id > '$id') ORDER BY due_date ASC";
+					$descResult = $db_request->runQuery($sqlDesc);
+					$dResult = [];
+				
+					foreach($descResult as $tValue){
+						if(!(strpos(strtolower($tValue['description']),strtolower($val)) === false)){
+							array_push($dResult, $tValue);
+						}	
+					}
+					if(empty($descResult)){
+						$descResult[]="0 Results To Display";
+					}
 				}
 				$set = 1;
 			} ?>
@@ -127,13 +155,23 @@
 						else if($type == "title") echo json_encode($titleResult);
 						else if($type == "type") echo json_encode($typeResult);
 						else if($type == "poster") echo json_encode($posterResult);
-						else echo "No results found.";}?>;
+						else if($type == "description") echo json_encode($dResult);
+						}?>;
 		(function() {
-			var elm = document.getElementById('TaskStream'),
-
-				df = document.createDocumentFragment();
+			var elm = document.getElementById('five'),
+			df = document.createDocumentFragment();
+			
 			for (var i = 0; i < tagArray.length; i++) {
-				if(tagArray[i]["status"] == "0")
+				
+				if(tagArray[0] == "0 Results To Display"){
+					var div = document.createElement("div");
+					div.className="align-center";
+					var title = document.createElement('h3');
+					title.appendChild(document.createTextNode(tagArray[i]));
+					div.appendChild(title);
+					df.appendChild(div);
+				}
+				else if(tagArray[i]["status"] == "0" || tagArray[i]["status"] == "4")
 				{
 				var div = document.createElement("div");
 				var div2 = document.createElement("div");
@@ -161,7 +199,7 @@
 				title.appendChild(document.createTextNode(tagArray[i]["title"]));
 				div.appendChild(title);
 				df.appendChild(div);
-				description.appendChild(document.createTextNode("Descriptions: "+tagArray[i]["description"]));
+				description.appendChild(document.createTextNode("Description: "+tagArray[i]["description"]));
 				
 					description.appendChild(document.createElement("br"));
 				description.appendChild(document.createTextNode("Pages: "+tagArray[i]["pages"]));

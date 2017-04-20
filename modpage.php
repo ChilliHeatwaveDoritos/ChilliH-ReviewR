@@ -31,13 +31,14 @@ if($rows == 0){
 				<div class="inner">
 					<span class="icon major fa-cloud"></span>
 					<h1><strong>MODERATOR AREA</strong></h1>
+					
 				</div>
 			</section>
 			<section>
 				<div class="align-center">
 					<br>
 					<a href="ReviewR.php" class="button">Homepage</a>
-					<a href="search.php" class="button">Search</a>
+					<a href="filterPage.php" class="button">Search</a>
 					<a href="logout.php" class="button">Logout</a>
 				</div>
 			</section>
@@ -47,6 +48,8 @@ if($rows == 0){
 					<a href='FlaggedTasks.php' class="button modpage">View Flagged Tasks</a>
 					<br>
 					<a href='Ban.php' class="button modpage">Ban User</a>
+					<br>
+					<a href='deleteTask.php' class="button modpage">Remove Task</a>
 				
 				</div>
 		</section>
@@ -68,9 +71,10 @@ if($rows == 0){
 					<li><a href="#" class="icon alt fa-github"><span class="label">GitHub</span></a></li>
 					<li><a href="#" class="icon alt fa-envelope"><span class="label">Email</span></a></li>
 				</ul>
+
 			</section>
 
-		<!-- Scripts -->
+		<!-- Scripts from the CSS-->
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.scrolly.min.js"></script>
 			<script src="assets/js/skel.min.js"></script>

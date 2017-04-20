@@ -31,11 +31,6 @@ if (isset($_POST) && count ($_POST) > 0){
 	$due_date= stripslashes($_POST["dueDate"]);
 	
 	$db_request = new DBController();
-
-		
-		
-		/*echo("INSERT INTO tasks (poster_id,title, type, description, pages, words, format, tag1,tag2,tag3,tag4,create_date,due_date)VALUES ('$poster_id','$title', '$type', '$description', '$pages',
-		'$words','$format' ,'$tag1','$tag2','$tag3','$tag4', '$create_date','$due_date');");*/
 		
 		//TESTING FILE UPLOAD TO A FOLDER BELOW
 		
@@ -66,16 +61,16 @@ if (isset($_POST) && count ($_POST) > 0){
 			if (move_uploaded_file($_FILES["File"]["tmp_name"], $target_file)) {
 				echo "The file ". basename( $_FILES["File"]["name"]). " has been uploaded.";
 				$query = "INSERT INTO tasks (poster_id,title, type, description, pages, words, format, tag1,tag2,tag3,tag4,create_date,due_date)VALUES ('$poster_id','$title', '$type', '$description', '$pages',
-				'$words','$format' ,'$tag1','$tag2','$tag3','$tag4', '$create_date','$due_date');";
+				'$words','$fileType' ,'$tag1','$tag2','$tag3','$tag4', '$create_date','$due_date');";
 				$db_request->insertQuery($query);
 			} else {
 				echo "Sorry, there was an error uploading your file.";
 				$query = "INSERT INTO tasks (poster_id,title, type, description, pages, words, format, tag1,tag2,tag3,tag4,create_date,due_date)VALUES ('$poster_id','$title', '$type', '$description', '$pages',
-				'$words','$format' ,'$tag1','$tag2','$tag3','$tag4', '$create_date','$due_date');";
+				'$words','$fileType' ,'$tag1','$tag2','$tag3','$tag4', '$create_date','$due_date');";
 				$db_request->insertQuery($query);
 			}
 		}
-		header("Location: ./ReviewR.php");
+		header("Location: ./Profile.php#four");
 	}
 
 ?>
@@ -96,7 +91,7 @@ if (!isset($_POST) || count($_POST) == 0){?>
 		<div class="align-center">
 			<br>
 			<a href="Profile.php" class="button">Profile</a>
-			<a href="search.php" class="button">Search</a>
+			<a href="filterPage.php" class="button">Search</a>
 			<a href="logout.php" class="button">Logout</a>
 			<br>
 			<br>
@@ -109,13 +104,14 @@ if (!isset($_POST) || count($_POST) == 0){?>
 		<header class = "major special">
 			<h1>Upload A Task<br /></h1>
 		</header>
+		<!-- Form for the Upload -->
 		<form method="post" enctype="multipart/form-data">
 			<div class ="row uniform 50%">
 				<div class = "6u 12u$(small)">
-					<input type = "text" name = "TaskTitle" placeholder="Title" required/>
+					<input type = "text" name = "TaskTitle" maxlength="64" placeholder="Title" required/>
 				</div>
 				<div class = "12u$">
-					<textarea rows = "6" name = "TaskDescription"></textarea>
+					<textarea rows = "6" name = "TaskDescription" maxlength = "1000"></textarea>
 				</div>
 				<div class = "6u 12u$(small)">	
 					<div class ="select-wrapper">
@@ -138,28 +134,19 @@ if (!isset($_POST) || count($_POST) == 0){?>
 					</div>
 				</div>
 				<div class = "6u 12u$(small)">
-					<input type = "text" name = "type" placeholder="Type" required/>
+					<input type = "text" name = "type" placeholder="Subject Field" required/>
 				</div>
 				<div class = "6u 12u$(small)">
-					<div class = "select-wrapper">
-						<select name = "format">
-							<option value="docx">docx</option>
-						  <option value="doc">doc</option>
-						  <option value="pdf">pdf</option>
-						</select>
-					</div>
+					<input type = "text" name = "Pages" onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="6" placeholder="No. of Pages" required/>
 				</div>
 				<div class = "6u 12u$(small)">
-					<input type = "text" name = "Pages" placeholder="No. of Pages" required/>
-				</div>
-				<div class = "6u 12u$(small)">
-					<input type = "text" name = "words" placeholder="No. of Words" required/>
+					<input type = "text" name = "words" maxlength="16" onkeypress='return event.charCode >= 48 && event.charCode <= 57' placeholder="No. of Words" required/>
 				</div>	
 				<div class = "6u 12u$(small)">	
-					<input type = "date" name = "dueDate" placeholder="date" required/>
+					<input type = "date" name = "dueDate"  placeholder="date" required/>
 				</div>
 				<div class = "12u$">
-					<input type = "file" name = "File" placeholder="file">
+					<strong>Sample of your document:</strong> <input type = "file" name = "File" placeholder="file" required>
 				</div>
 				<div class = "align-left">
 					<ul class ="actions">
@@ -168,6 +155,7 @@ if (!isset($_POST) || count($_POST) == 0){?>
 				</div>
 			</div>
 		</form>
+		<!-- Dynamic Tags -->
 		<script>
 	var tagArray = <?php echo json_encode($result); ?>;
 	var count = <?php echo $countArray; ?>;
@@ -184,6 +172,7 @@ if (!isset($_POST) || count($_POST) == 0){?>
 		}());
 		
 	</script>
+	<!-- Dynamic Tags -->
 	<script>
 	(function() {
 			var elm = document.getElementById('tag2'),
@@ -197,6 +186,7 @@ if (!isset($_POST) || count($_POST) == 0){?>
 			elm.appendChild(df);
 		}());
 	</script>
+	<!-- Dynamic Tags -->
 	<script>
 	(function() {
 			var elm = document.getElementById('tag3'),
@@ -210,6 +200,7 @@ if (!isset($_POST) || count($_POST) == 0){?>
 			elm.appendChild(df);
 		}());
 	</script>
+	<!-- Dynamic Tags -->
 	<script>
 	(function() {
 			var elm = document.getElementById('tag4'),

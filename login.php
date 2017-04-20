@@ -12,13 +12,13 @@ if (isset($_POST) && count ($_POST) > 0){
 	$db_request = new DBController();
 	$rows = $db_request->numRows($query);
 	$banned = $db_request->numRows($isbanned);
-	if($banned == 1){
+	if($banned > 0){
 		$get = "SELECT reason from banned_users WHERE email = '$email'";
 		$result = $db_request->runQuery($get);
 		$reason = $result[0]['reason'];
 		echo "<div style='color:white;' class='form'>
-		<br><br><br>
-		<h2>This account has been banned. Reason: '$reason'</h2>";
+		<br><br>
+		<h2>This account has been banned.<br> Reason: '$reason'</h2></div>";
 	}
 	else if($rows==1){
 		session_start();

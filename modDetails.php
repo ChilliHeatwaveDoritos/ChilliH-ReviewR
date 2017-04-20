@@ -98,13 +98,13 @@
 			var  body = document.getElementById("taskDescription");
 			var  form = document.getElementById("form"),
 			df = document.createDocumentFragment(),
-			df2 = document.createDocumentFragment(),
-			df3 = document.createDocumentFragment();
+			df2 = document.createDocumentFragment();
 			
 			//Header for Task
 			var title = document.createElement('h2');
 			var op = document.createElement('P');
 			title.appendChild(document.createTextNode(taskArray[0]["title"]));
+			title.appendChild(document.createTextNode("\n [Task ID: "+taskArray[0]["task_id"] + "]"));
 			op.appendChild(document.createTextNode("Posted by: "+nameArray[0]["fname"]+" "+nameArray[0]["sname"]+" | User ID: "+ poster));
 			df.appendChild(title);
 			df.appendChild(op);
@@ -136,60 +136,10 @@
 				expiration.appendChild(document.createTextNode("Finish Before: "+taskArray[0]["due_date"]));
 				df2.appendChild(expiration);
 			body.appendChild(df2);
-		
-			//Claim form
-			 var claimForm = document.createElement("form");
-					claimForm.method="POST";
-					claimForm.action="claim.php";
-			var buttonSubmit = document.createElement("input");
-			var poster_id = document.createElement("input");
-			var task_id = document.createElement("input");
-					poster_id.type  ="hidden";
-					poster_id.name= "poster_id";
-					poster_id.id =taskArray[0]['poster_id'];
-					poster_id.value=taskArray[0]['poster_id'];
-						claimForm.appendChild(poster_id);
-						
-					task_id.type = "hidden";
-					task_id.name= "task_id";
-					task_id.id= "task_id";
-					task_id.value=taskArray[0]['task_id'];
-						claimForm.appendChild(task_id);
-						
-					buttonSubmit.setAttribute("type","submit");
-					buttonSubmit.value = "Claim";
-					buttonSubmit.className ="uniform row";
-						claimForm.appendChild(buttonSubmit);
-					df3.appendChild(claimForm); 
-					
-					form.appendChild(df3);
 			
 		}());
 		</script>
-		<form action = "BanTask.php" method = "post" id = "BanTask">
-			<input type  = "submit" value = "Flag" class  = "uniform row">
-		</form>
-		<!-- Flag form script -->
-		<script>
-			var  ban = document.getElementById("BanTask");
-			var banForm = document.createDocumentFragment();
-			
-			var reporterId = document.createElement("input");
-			reporterId.value = <?php echo json_encode($id); ?>;
-			reporterId.type = "hidden";
-			reporterId.name = "reporterId";
-			banForm.appendChild(reporterId);
-			
-			
-			var banTaskId = document.createElement("input");
-			banTaskId.value = taskArray[0]["task_id"];
-			banTaskId.type = "hidden";
-			banTaskId.name = "banTaskId";
-			banForm.appendChild(banTaskId);
-			
-			ban.appendChild(banForm);
-			
-		</script>
+
 	</section>
 	<section id="footer">
 				<ul class="icons">

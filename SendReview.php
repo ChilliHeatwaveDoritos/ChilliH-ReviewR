@@ -4,13 +4,12 @@
 	include '/Test1.php';
 	
 ?>
+<!-- PHP script that collects all the information from the task the claimant is reviewing -->
 <?php
 	$db_request = new DBController();
 	$id = $_SESSION['user'];
-	$userClaimQuery = "select title,claimed_tasks.task_id from tasks, claimed_tasks where tasks.task_id = claimed_tasks.task_id AND claimant_id = $id";
+	$userClaimQuery = "select title,claimed_tasks.task_id from tasks, claimed_tasks where tasks.task_id = claimed_tasks.task_id AND claimant_id = $id AND status = 1";
 	$userClaimed = $db_request->runQuery($userClaimQuery);
-	
-	//echo $userClaimed[0]["task_id"];
 ?>
 <!DOCTYPE html>
 <html>
@@ -53,7 +52,7 @@
 					</div>
 				</div>
 					<div class = "12u$">
-					<textarea rows = "6" name = "TaskReview" placeholder = "Review"></textarea>
+					<textarea rows = "6" name = "TaskReview" placeholder = "Review" maxlength = "1000"></textarea>
 				</div>
 				<div class = "align-left">
 					<ul class ="actions">
@@ -64,7 +63,7 @@
 		</form>
 		</section>
 		<script>
-		
+		<!-- JavaScript that prints all the information needed. -->
 			var claimedArray = <?php echo json_encode($userClaimed); ?>;
 			(function() {
 				var  review = document.getElementById("TaskId");
@@ -94,7 +93,7 @@
 				</ul>
 			</section>
 
-		<!-- Scripts -->
+		<!-- Scripts from the CSS -->
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.scrolly.min.js"></script>
 			<script src="assets/js/skel.min.js"></script>

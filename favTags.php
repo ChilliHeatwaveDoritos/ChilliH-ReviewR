@@ -91,7 +91,7 @@
 			$db_request->updateQuery($update);
 		}
 		
-		$getTasks = "SELECT * FROM tasks WHERE tag1='$favTag1' OR tag1='$favTag1' OR tag1='$favTag1' OR tag1='$favTag1' OR tag2='$favTag2' OR tag2='$favTag2' OR tag2='$favTag2' OR tag2='$favTag2' OR tag3='$favTag3' OR tag3='$favTag3' OR tag3='$favTag3' OR tag3='$favTag3' OR tag4='$favTag4' OR tag4='$favTag4' OR tag4='$favTag4' OR tag4='$favTag4'";
+		$getTasks = "SELECT * FROM tasks WHERE (status = 0 or status = 4) AND (tag1='$favTag1' OR tag1='$favTag1' OR tag1='$favTag1' OR tag1='$favTag1' OR tag2='$favTag2' OR tag2='$favTag2' OR tag2='$favTag2' OR tag2='$favTag2' OR tag3='$favTag3' OR tag3='$favTag3' OR tag3='$favTag3' OR tag3='$favTag3' OR tag4='$favTag4' OR tag4='$favTag4' OR tag4='$favTag4' OR tag4='$favTag4') AND status = 0 AND (poster_id < '$id' OR poster_id > '$id') ORDER BY due_date ASC";
 		$suggestedTasks = $db_request->runQuery($getTasks);
 	}
 ?>

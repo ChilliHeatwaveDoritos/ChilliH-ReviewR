@@ -1,0 +1,38 @@
+> 2 user roles
+> landing page
+> registration & specific domains
+> Creating tasks
+> task stream (closest to due first)
+> more details button
+> download preview doc
+> claim + disappears from stream
+> +10 score for claim
+> flagging task
+> +2 score for flagging task
+> view claimed tasks list sorted with due dates
+> full file request w/ email template
+> mark as complete (send review)
+> cancel task - 15 score
+> failed to complete review -30 score
+> view personal uploads and various statuses
+> task owner should see email address, fname and sname
+> review claimants work (happy/sad)
+> happy +5 sad -5
+> score >=40 = mod
+> ban users, view flagged, remove tasks
+> 80 different tasks
+> 20 tags
+X > 20 different users
+
+
+-EXTRA FEATURES-
+
+> edit profile info 
+> delete profiles
+> search tasks for titles, tags, type, poster
+> search tasks for description
+X > users who viewed this also viewed..
+> subscribe to tags (automatic tag association done instead)
+X > allow users to upload the full doc and claimants to dl the full doc
+> users online counter
+X > FAQ page

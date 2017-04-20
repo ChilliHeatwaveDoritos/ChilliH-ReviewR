@@ -1,0 +1,9 @@
+0= unclaimed
+1= claimed
+2= flagged
+3= finished not Reviewed
+4= cancelled
+5= Complete 
+6= expired
+7= deleted
+

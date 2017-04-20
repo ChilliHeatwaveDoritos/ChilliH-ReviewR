@@ -38,7 +38,7 @@
 				</div>
 			</section>
 			
-			<section>
+			<section class="container">
 			<br>
 				<h2>Filters</h2>
 				<form name="filter" method="post" enctype="multipart/form-data" action ="filterPage.php">
@@ -49,7 +49,7 @@
 								  <option value="tag">Tag</option>
 								  <option value="title">Title</option>
 								  <option value="type">Type</option>
-								  <option value="poster">Poster</option>
+								  <option value="poster">Poster ID</option>
 								</select>
 							</div>
 						</div>
@@ -57,7 +57,7 @@
 							<input type = "text" name = "filterValue" placeholder="Filter" required/>
 						</div>
 						<div>
-							<br><input type = "submit" value="Change Filter" class="uniform row">
+							<br><input type = "submit" value="Change Filter" class="button fit special">
 						</div>
 					</div>
 				</form>		
@@ -80,7 +80,7 @@
 			<?php
 if (!isset($_POST) || count($_POST) == 0){?>
 	<section id="five" class="main style2 special">
-				<div class="container">
+				<div id='1' class="container">
 					<header class="major special">
 						<h2>Tasks suggested for you...</h2>
 					</header>
@@ -99,7 +99,7 @@ if (!isset($_POST) || count($_POST) == 0){?>
 
 				df = document.createDocumentFragment();
 			for (var i = 0; i < tagArray.length; i++) {
-				if(tagArray[i]["status"] == "0")
+				if(tagArray[i]["status"] == "0" || tagArray[i]["status"] == "4")
 				{
 				var div = document.createElement("div");
 				var div2 = document.createElement("div");
@@ -127,7 +127,7 @@ if (!isset($_POST) || count($_POST) == 0){?>
 				title.appendChild(document.createTextNode(tagArray[i]["title"]));
 				div.appendChild(title);
 				df.appendChild(div);
-				description.appendChild(document.createTextNode("Descriptions: "+tagArray[i]["description"]));
+				description.appendChild(document.createTextNode("Description: "+tagArray[i]["description"]));
 				
 					description.appendChild(document.createElement("br"));
 				description.appendChild(document.createTextNode("Pages: "+tagArray[i]["pages"]));

@@ -35,7 +35,7 @@ if($rows == 0){
 				<div class="align-center">
 					<br>
 					<a href="ReviewR.php" class="button">Homepage</a>
-					<a href="search.php" class="button">Search</a>
+					<a href="filterPage.php" class="button">Search</a>
 					<a href="logout.php" class="button">Logout</a>
 					<br>
 					<br>
@@ -59,8 +59,8 @@ if($rows == 0){
 				</div>
 		 </section>
 		 <script>
-			var flagArray= <?php echo json_encode($result1); ?>;
-			var flagged= <?php echo json_encode($flaggedTasks); ?>;
+		 //JavaScript that prints all the tasks onto the page
+			var flagArray= <?php echo json_encode($flaggedTasks); ?>;
 				(function() {
 			var elm = document.getElementById('tasks'),
 				df = document.createDocumentFragment();
@@ -77,7 +77,7 @@ if($rows == 0){
 							var moreDetailsButton = document.createElement("input");
 							var moreDetails = document.createElement("form");
 								moreDetails.method="POST";
-								moreDetails.action="MoreDetails.php";
+								moreDetails.action="modDetails.php";
 							//Delete Tasks
 							var deleteForm = document.createElement("form");
 							var banned_id = document.createElement("input");
@@ -90,12 +90,13 @@ if($rows == 0){
 							var unFlagButton = document.createElement("input");
 								unFlagForm.method= "post";
 								unFlagForm.action= "UnFlag.php";	
-							
+							//Task Details
 							title.appendChild(document.createTextNode(flagArray[i]["title"]));
 							div.appendChild(title);
 							df.appendChild(div);
-							description.appendChild(document.createTextNode("Descriptions: "+flagArray[i]["description"]));
-							
+							description.appendChild(document.createTextNode("Description: "+flagArray[i]["description"]));
+								description.appendChild(document.createElement("br"));
+							description.appendChild(document.createTextNode("Task ID: "+flagArray[i]["task_id"]));
 								description.appendChild(document.createElement("br"));
 							description.appendChild(document.createTextNode("Pages: "+flagArray[i]["pages"]));
 								description.appendChild(document.createElement("br"));
@@ -120,7 +121,7 @@ if($rows == 0){
 							
 							div2.appendChild(deleteForm);
 							
-							//Unflag
+							//Unflag Form
 							flag_id.type = "hidden";
 							flag_id.name = "ban_id";
 							flag_id.value = flagArray[i]["task_id"];
@@ -132,7 +133,7 @@ if($rows == 0){
 							
 							div2.appendChild(unFlagForm);
 							
-							//MoreDetails
+							//MoreDetails Form
 							moreDetailsButton.setAttribute("type","submit");
 							moreDetailsButton.value="More Details";				
 							moreDetailsButton.className ="uniform row";				
@@ -170,7 +171,7 @@ if($rows == 0){
 				</ul>
 			</section>
 
-		<!-- Scripts -->
+		<!-- Scripts from the CSS-->
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.scrolly.min.js"></script>
 			<script src="assets/js/skel.min.js"></script>
